@@ -3,10 +3,10 @@ import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
 import TicketDetail from './TicketDetail';
 import EditTicketForm from './EditTicketForm';
-//import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import * as a from './../actions';
-//import { withFirestore } from 'react-redux-firebase'
+
 import { withFirestore, isLoaded } from 'react-redux-firebase';
 
 class TicketControl extends React.Component {
@@ -38,12 +38,7 @@ class TicketControl extends React.Component {
 
 
   updateTicketElapsedWaitTime = () => {
-    const { dispatch } = this.props;
-    Object.values(this.props.mainTicketList).forEach(ticket => {
-      const newFormattedWaitTime = ticket.timeOpen.fromNow(true);
-      const action = a.updateTime(ticket.id, newFormattedWaitTime);
-      dispatch(action);
-    });
+    console.log('tick');
   }
     handleEditClick = () => {
       console.log("handleEditClick reached!");
@@ -58,6 +53,7 @@ class TicketControl extends React.Component {
     }
 
     handleChangingSelectedTicket = (id) => {
+      console.log("test2");
       this.props.firestore.get({collection: 'tickets', doc: id}).then((ticket) => {
         const firestoreTicket = {
           names: ticket.get("names"),
@@ -87,7 +83,8 @@ class TicketControl extends React.Component {
       this.setState({selectedTicket: null});
     }
 
-    handleAddingNewTicketToList = (newTicket) => {
+    handleAddingNewTicketToList = () => {
+      console.log("test")
       const { dispatch } = this.props;
       const action = a.toggleForm();
       dispatch(action);
@@ -149,13 +146,13 @@ TicketControl.propTypes = {
   formVisibleOnPage: PropTypes.bool
 };
 
-// const mapStateToProps = state => {
-//   return {
-//     mainTicketList: state.mainTicketList,
-//     formVisibleOnPage: state.formVisibleOnPage
-//   }
-// }
+const mapStateToProps = state => {
+  return {
+    mainTicketList: state.mainTicketList,
+    formVisibleOnPage: state.formVisibleOnPage
+  }
+}
 
-//TicketControl = connect(mapStateToProps)(TicketControl);
+TicketControl = connect(mapStateToProps)(TicketControl);
 
 export default withFirestore(TicketControl);

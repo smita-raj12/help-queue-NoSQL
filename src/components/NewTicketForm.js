@@ -11,7 +11,7 @@ function NewTicketForm(props){
 
  
   const firestore = useFirestore();
-
+  
   
   function addTicketToFirestore(event) {
     event.preventDefault();
